@@ -1,4 +1,4 @@
-import mongoose, { Document, Schema } from 'mongoose';
+import { Schema, model, Document } from 'mongoose';
 
 // Product interface
 export interface IProduct extends Document {
@@ -13,7 +13,7 @@ export interface IProduct extends Document {
 }
 
 // Product schema
-const ProductSchema: Schema = new Schema(
+const productSchema = new Schema<IProduct>(
   {
     name: {
       type: String,
@@ -54,4 +54,4 @@ const ProductSchema: Schema = new Schema(
 );
 
 // Create and export Product model
-export default mongoose.model<IProduct>('Product', ProductSchema); 
+export default model<IProduct>('Product', productSchema); 

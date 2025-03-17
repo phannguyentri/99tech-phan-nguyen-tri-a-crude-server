@@ -34,13 +34,20 @@ app.get('/health', (req, res) => {
 // Connect to MongoDB
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/product-db';
 
+// Configure Mongoose
+mongoose.set('strictQuery', false);
+
 mongoose
   .connect(MONGODB_URI)
   .then(() => {
     console.log('Connected to MongoDB');
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
   })
-  .catch((err) => {
-    console.error('MongoDB connection error:', err);
+  .catch((error) => {
+    console.error('Failed to connect to MongoDB:', error);
+    process.exit(1);
   });
 
 // Error handling middleware
@@ -52,11 +59,6 @@ app.use((err: any, req: express.Request, res: express.Response, next: express.Ne
     message: 'Internal Server Error',
     ...(process.env.NODE_ENV === 'development' && { error: err.message })
   });
-});
-
-// Start server
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
 });
 
 export default app; 

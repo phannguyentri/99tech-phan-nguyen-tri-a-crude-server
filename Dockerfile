@@ -1,9 +1,9 @@
-FROM node:18-alpine
+FROM node:16
 
 WORKDIR /app
 
 # Install global dependencies
-RUN npm install -g nodemon
+RUN npm install -g nodemon ts-node typescript
 
 # Copy package files
 COPY package*.json ./
@@ -21,4 +21,4 @@ RUN npm run build
 EXPOSE 3000
 
 # Default command to run in production
-CMD ["npm", "start"] 
+CMD ["npm", "run", "dev"] 

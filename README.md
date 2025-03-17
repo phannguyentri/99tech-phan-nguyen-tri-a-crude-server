@@ -1,146 +1,139 @@
-# A Crude Server - Product API
+# CRUD Server with MongoDB and Express
 
-A CRUD API server for products using Express, TypeScript, and MongoDB.
+A RESTful CRUD API server built with MongoDB, Express, and TypeScript, following MVC architecture.
 
 ## Features
 
-- RESTful API with Express.js and TypeScript
-- MongoDB database integration with Mongoose
-- Docker and Docker Compose setup for easy development and deployment
-- Complete CRUD operations for products
-- Filtering, sorting, and pagination for product listing
-- Error handling and validation
-- MVC architecture
+- RESTful API endpoints for product management
+- MongoDB integration with Mongoose ODM
+- TypeScript for type safety
+- Docker containerization
 - Automatic database seeding with sample data
+- Comprehensive filtering system
+- Unit testing with Jest and Supertest
 
-## Prerequisites
+## Tech Stack
 
-- [Node.js](https://nodejs.org/) (v14 or higher)
-- [Docker](https://www.docker.com/) and [Docker Compose](https://docs.docker.com/compose/)
-- [Git](https://git-scm.com/)
+- Node.js & Express
+- TypeScript
+- MongoDB & Mongoose
+- Docker & Docker Compose
+- Jest & Supertest for testing
 
 ## Getting Started
 
-### Using Docker (Recommended)
+### Prerequisites
 
-1. Clone the repository:
+- Docker and Docker Compose
+- Node.js (v16 or later)
+- npm
+
+### Installation
+
+1. Clone the repository
+2. Run with Docker:
    ```bash
-   git clone <repository-url>
-   cd crude-server
+   docker-compose up --build
    ```
+   The server will start at http://localhost:3000
 
-2. Start the application with Docker Compose:
-   ```bash
-   docker-compose up
-   ```
+### Environment Variables
 
-   This will start both the Node.js application and MongoDB in separate containers.
-   The database will be automatically seeded with sample products if it's empty.
-
-3. The API will be available at http://localhost:3000
-
-### Manual Setup
-
-1. Clone the repository:
-   ```bash
-   git clone <repository-url>
-   cd crude-server
-   ```
-
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-3. Create a `.env` file in the root directory with the following content:
-   ```
-   NODE_ENV=development
-   PORT=3000
-   MONGODB_URI=mongodb://localhost:27017/product-db
-   ```
-
-4. Make sure MongoDB is running locally or update the MONGODB_URI in the .env file.
-
-5. Start the development server:
-   ```bash
-   npm run dev
-   ```
-
-6. For production, build and start:
-   ```bash
-   npm run build
-   npm start
-   ```
+- `PORT`: Server port (default: 3000)
+- `MONGODB_URI`: MongoDB connection string (default: mongodb://mongodb:27017/product-db)
+- `NODE_ENV`: Environment mode (development/production)
 
 ## API Endpoints
 
 ### Products
 
-- **Create a product**
-  - `POST /api/products`
-  - Request body: Product object
-
-- **Get all products**
-  - `GET /api/products`
+- `GET /api/products`: Get all products with filtering options
   - Query parameters:
     - `category`: Filter by category
-    - `inStock`: Filter by availability (true/false)
-    - `minPrice`: Filter by minimum price
-    - `maxPrice`: Filter by maximum price
-    - `sortBy`: Field to sort by (default: createdAt)
-    - `sortOrder`: Sort order (asc/desc, default: desc)
-    - `page`: Page number (default: 1)
-    - `limit`: Items per page (default: 10)
+    - `minPrice`/`maxPrice`: Filter by price range
+    - `inStock`: Filter by stock status
+    - `name`: Search by product name
+    - `description`: Search by product description
+    - `page`: Page number for pagination
+    - `limit`: Items per page
+    - `sortBy`: Field to sort by
+    - `sortOrder`: Sort order (asc/desc)
 
-- **Get a product by ID**
-  - `GET /api/products/:id`
+- `POST /api/products`: Create a new product
+- `GET /api/products/:id`: Get a product by ID
+- `PUT /api/products/:id`: Update a product
+- `DELETE /api/products/:id`: Delete a product
 
-- **Update a product**
-  - `PUT /api/products/:id`
-  - Request body: Updated product object
+## Testing
 
-- **Delete a product**
-  - `DELETE /api/products/:id`
+The project includes comprehensive unit tests using Jest and Supertest. The tests cover all CRUD operations and filtering functionality.
 
-## Product Model
+### Test Coverage
 
-```typescript
-{
-  name: string;         // Product name (required)
-  description: string;  // Product description (required)
-  price: number;        // Product price (required, non-negative)
-  category: string;     // Product category (required)
-  inStock: boolean;     // Availability status (default: true)
-  quantity: number;     // Available quantity (required, non-negative, default: 0)
-  createdAt: Date;      // Creation timestamp (auto-generated)
-  updatedAt: Date;      // Last update timestamp (auto-generated)
-}
+- **Product Creation**
+  - Creating products with valid data
+  - Handling invalid product data
+
+- **Product Retrieval**
+  - Getting all products with pagination
+  - Filtering products by:
+    - Category
+    - Price range
+    - Stock status
+    - Name search
+    - Description search
+
+- **Product Updates**
+  - Updating existing products
+  - Handling non-existent products
+
+- **Product Deletion**
+  - Deleting products
+  - Handling non-existent products
+
+### Running Tests
+
+```bash
+# Install dependencies
+npm install
+
+# Run tests
+npm test
+
+# Run tests in watch mode
+npm run test:watch
 ```
+
+### Test Environment
+
+- Uses `mongodb-memory-server` for isolated testing
+- Automatically sets up and tears down test database
+- Independent test suites for each endpoint
+- Mocked data for consistent testing
 
 ## Sample Data
 
-The application automatically seeds the database with sample products if it's empty. The sample data includes:
+When the application starts with an empty database, it will be seeded with sample products including:
+- iPhone 15 Pro
+- MacBook Pro 16
+- iPhone 13 Pro
 
-- iPhone 13 Pro (Electronics)
-- Samsung Galaxy S22 (Electronics)
-- MacBook Pro 16 (Computers)
-- Dell XPS 15 (Computers)
-- Sony WH-1000XM4 (Audio)
+## Error Handling
 
-## Development
+The API includes comprehensive error handling for:
+- Invalid requests
+- Non-existent resources
+- Validation errors
+- Database errors
 
-- Run in development mode: `npm run dev`
-- Build for production: `npm run build`
-- Run in production mode: `npm start`
+## Contributing
 
-## Docker Commands
-
-- Start containers: `docker-compose up`
-- Start in detached mode: `docker-compose up -d`
-- Stop containers: `docker-compose down`
-- Rebuild containers: `docker-compose up --build`
-- Reset database: `docker-compose down -v` (removes volumes)
+1. Fork the repository
+2. Create your feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a new Pull Request
 
 ## License
 
-ISC
+This project is licensed under the ISC License.

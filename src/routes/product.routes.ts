@@ -1,4 +1,4 @@
-import express from 'express';
+import { Router } from 'express';
 import {
   createProduct,
   getProducts,
@@ -7,7 +7,7 @@ import {
   deleteProduct
 } from '../controllers/product.controller';
 
-const router = express.Router();
+const router = Router();
 
 // Create a new product
 router.post('/', createProduct);
